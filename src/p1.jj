@@ -1,0 +1,48 @@
+options {
+    LOOKAHEAD  = 1;
+    STATIC = false;
+    }
+PARSER_BEGIN(Parser)
+    import java.io.*;
+    import java.math.*;
+    public class Parser {
+        public static void main (String[] args) throws ParseException, TokenMgrError{
+            URL url;
+            InputStream is = null;
+            BufferedReader br;
+            String text;
+            String lines [] = new String [35];
+            try {
+                url = new URL("http://www.infobolsa.es/acciones/ibex35");
+                is = url.openStream();
+                br = new BufferedReader(new InputStreamReader(is));
+                text = parser.Start(br);
+
+
+            } catch (MalformedURLException mue) {
+                mue.printStackTrace();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            } finally {
+                try {
+                    if (is != null) is.close();
+                } catch (IOException ioe) {
+                    // nothing to see here
+                }
+            }
+            System.out.println("Introduce Numero de Empresa a consultar");
+            Parser parser = new Parser (System.in);
+            System.out.println(parser.Start());
+        }
+    }
+PARSER_END(Parser)
+
+SKIP :
+{   " " | "\r" | "\t" | "\n"
+}
+
+TOKEN :
+{
+
+int Start () throws NumberFormatException :
+{ int n; }
