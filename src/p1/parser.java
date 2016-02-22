@@ -1,7 +1,6 @@
 package p1;
 
 import java.io.*;
-import java.math.*;
 import java.net.*;
 import java.text.ParseException;
 import java.util.Scanner;
@@ -15,7 +14,7 @@ public class Parser {
         URL url;
         InputStream is = null;
         BufferedReader br;
-        int input;
+        int i,input,ultimo;
         String text;
         String aux [] = new String [empresa];
         String lines [][] = new String [empresa][2];
@@ -26,15 +25,21 @@ public class Parser {
             text = parser.Start(br);
             aux = text.split("\n");
             System.out.println("Introduce Numero de Empresa a consultar, 1-35");
-            for (int i=0; i< empresa; i++ ){
+            for (i=0; i< empresa; i++ ){
                 lines[i] = aux[i].split("\t");
                 System.out.printf("%d. %s\n", i+1,lines[i][0]);
             }
             Scanner in = new Scanner (System.in);
             input = in.nextInt();
+            br.close();
+            br = new BufferedReader(new FileReader("p1/last.txt"));
+            for (i=0; i< input; i++){
+                text = br.readLine();
+            }
+            aux = text.split("\t");
+            ultimo = Integer.parseInt(aux[2]);
 
-            System.out.printf("Empresa %s, ultimo: %d anterior %d",lines[input][0], lines[input][1],  );
-
+            System.out.printf("Empresa %s, ultimo: %d anterior %d",lines[input][0], lines[input][1], ultimo );
 
         } catch (MalformedURLException mue) {
         mue.printStackTrace();
