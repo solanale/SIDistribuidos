@@ -24,10 +24,10 @@ class Parser {
 //            System.out.println(br.readLine());
 //            System.out.println(br.readLine().toString());
 
-            String out = new Scanner(new URL("http://www.infobolsa.es/acciones/ibex35").openStream(), "UTF-8").useDelimiter("\\A").next();
-            System.out.println(out);
+            String html = new Scanner(new URL("http://www.infobolsa.es/acciones/ibex35").openStream(), "UTF-8").useDelimiter("\\A").next();
+            System.out.println(html);
 
-            text =""; // parser.Start(br);
+            text =parser.Start(html);
             aux = text.split("\n");
             System.out.println("Introduce Numero de Empresa a consultar, 1-35");
             for (i=0; i< empresa; i++ ){

@@ -22,13 +22,11 @@ PARSER_BEGIN(Parser)
             String aux [] = new String [empresa];
             String lines [][] = new String [empresa][2];
             try {
-                url = new URL("http://www.infobolsa.es/acciones/ibex35");
-                is = url.openStream();
-                br = new BufferedReader(new InputStreamReader(is));
-                System.out.println
 
-//                br = new BufferedReader(new FileReader("p1/acciones.html"));
-                text = parser.Start(br);
+                String html = new Scanner(new URL("http://www.infobolsa.es/acciones/ibex35").openStream(), "UTF-8").useDelimiter("\\A").next();
+                System.out.println(html);
+
+                text =parser.Start(html);
                 aux = text.split("\n");
                 System.out.println("Introduce Numero de Empresa a consultar, 1-35");
                 for (i=0; i< empresa; i++ ){
@@ -37,7 +35,7 @@ PARSER_BEGIN(Parser)
                 }
                 Scanner in = new Scanner (System.in);
                 input = in.nextInt();
-                br.close();
+                //br.close();
                 br = new BufferedReader(new FileReader("p1/last.txt"));
                 for (i=0; i< input; i++){
                     text = br.readLine();
@@ -53,12 +51,6 @@ PARSER_BEGIN(Parser)
                 fnf.printStackTrace();
             } catch (IOException ioe) {
                 ioe.printStackTrace();
-            } finally {
-                try {
-                    if (is != null) is.close();
-                } catch (IOException ioe) {
-                    // nothing to see here
-                }
             }
         }
     }
@@ -71,16 +63,15 @@ SKIP :
 TOKEN :
 {
     < NUMBER: (["0"-"9"])+ >
-   |< MINUS : (["a"-"z"])+ >
-   |< MAYUS : (["A"-"Z"])+ >
-   |< SPA   : (["ñÑ"])+ >
-   |< TEXT  : 
+   |< TEXT  : (["a"-"z"] | ["A"-"Z"] | ["ñÑ"])+  >
+   |< BODY  : "<tbody>"  >
+   |< FBODY : "</tbody>" >
 }
 
-int Start () :
-{ int n; }
-{ ( n = Expression ()
-    { return n; }
-    )*
-    <EOF>
-    }
+String Start () :
+{ Token t ;}
+{ <BODY>
+    t = <TEXT> { return t.image;}
+  <FBODY>
+}
+
