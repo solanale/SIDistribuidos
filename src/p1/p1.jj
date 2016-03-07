@@ -10,7 +10,7 @@ PARSER_BEGIN(Parser)
 
     public class Parser {
 
-        final int empresa = 35;
+        static final int empresa = 35;
 
         // Aplica un parser al html y devuelve la estructura Nombre\tUltimo\n de las 35 empresas
         public static void main (String[] args) throws ParseException, TokenMgrError{
@@ -23,10 +23,15 @@ PARSER_BEGIN(Parser)
             String lines [][] = new String [empresa][2];
             try {
 
-                String html = new Scanner(new URL("http://www.infobolsa.es/acciones/ibex35").openStream(), "UTF-8").useDelimiter("\\A").next();
-                System.out.println(html);
+//                String html = new Scanner(new URL("http://www.infobolsa.es/acciones/ibex35").openStream(), "UTF-8").useDelimiter("\\A").next();//                System.out.println(html);
 
-                text =parser.Start(html);
+		        url = new URL("http://www.infobolsa.es/acciones/ibex35");		        URLConnection connection = url.openConnection();
+		        is = connection.getInputStream();//		        br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+				Parser parser = new Parser (is);
+                text =parser.Start();
+				System.out.println(text);
+                
                 aux = text.split("\n");
                 System.out.println("Introduce Numero de Empresa a consultar, 1-35");
                 for (i=0; i< empresa; i++ ){
@@ -63,7 +68,7 @@ SKIP :
 TOKEN :
 {
     < NUMBER: (["0"-"9"])+ >
-   |< TEXT  : (["a"-"z"] | ["A"-"Z"] | ["Ã±Ã‘"])+  >
+   |< TEXT  : (["a"-"z"] | ["A"-"Z"]| [ñÑ] )+  >
    |< BODY  : "<tbody>"  >
    |< FBODY : "</tbody>" >
 }
