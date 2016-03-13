@@ -5,7 +5,7 @@ options {
 PARSER_BEGIN(Parser)
     import java.io.*;
     import java.net.*;
-    import java.text.ParseException;
+    //import java.text.ParseException;
     import java.util.Scanner;
 
     public class Parser {
@@ -23,10 +23,13 @@ PARSER_BEGIN(Parser)
             String lines [][] = new String [empresa][2];
             try {
 
-//                String html = new Scanner(new URL("http://www.infobolsa.es/acciones/ibex35").openStream(), "UTF-8").useDelimiter("\\A").next();//                System.out.println(html);
+//                String html = new Scanner(new URL("http://www.infobolsa.es/acciones/ibex35").openStream(), "UTF-8").useDelimiter("\\A").next();
+//                System.out.println(html);
 
-		        url = new URL("http://www.infobolsa.es/acciones/ibex35");		        URLConnection connection = url.openConnection();
-		        is = connection.getInputStream();//		        br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		        url = new URL("http://www.infobolsa.es/acciones/ibex35");
+		        URLConnection connection = url.openConnection();
+		        is = connection.getInputStream();
+//		        br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
 				Parser parser = new Parser (is);
                 text =parser.Start();
@@ -62,21 +65,57 @@ PARSER_BEGIN(Parser)
 PARSER_END(Parser)
 
 SKIP :
-{   " " | "\r" | "\t" | "\n"
+{
+  "\n"
+| "\r"
+| "\t"
+| " "
+| "<!--" : WithinComment
+}
+
+< WithinComment >
+SKIP :
+{
+  "-->" : DEFAULT
+}
+
+< WithingComment >
+MORE :
+{
+  < ~[ ] >
 }
 
 TOKEN :
 {
-    < NUMBER: (["0"-"9"])+ >
-   |< TEXT  : (["a"-"z"] | ["A"-"Z"]| [ñÑ] )+  >
-   |< BODY  : "<tbody>"  >
-   |< FBODY : "</tbody>" >
+  < INI : "<!DOCTYPE html>" >
+| < HTML : "<html>" >
+| < FHTML : "</html>">
+| < HEAD: "<head>" >
+| < FHEAD: "</head>" >
+| < BODY : "<body" (< ATTRIBUTE >)* ">" >
+| < FBODY : "</body>" >
+| < TAG : "<" (["a"-"z"])+ (<ATTRIBUTE>)* ">" >
+| < FTAG: "</" (<TAG>) ">" >
+| < ATTRIBUTE : (["a"-"z"])+ "=\"" (["a"-"z"])* "\"" >
+| < TEXT :  (~[<INI>,<HTML>])*  >
 }
 
-String Start () :
-{ Token t ;}
-{ <BODY>
-    t = <TEXT> { return t.image;}
-  <FBODY>
+String Start() :
+{
+  Token t;
 }
+{
+  < INI >
+  < HTML >
+  	< HEAD >
+  		< TEXT >
+  	< FHEAD >
+  	 t = < BODY >
+  	{ return t.image;
+ 	}
+  	< FBODY >
+  < FHTML >
+}
+
+
 
