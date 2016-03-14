@@ -64,24 +64,106 @@ PARSER_BEGIN(Parser)
     }
 PARSER_END(Parser)
 
+/*________________________*/
+
+
 SKIP :
 {
- 	<	( " " | "\t" | "\n" | "\r" )+	>
+  < ~[ ] >
 }
+
+< TABLA >
+SKIP :
+{
+  < ~[ ] >
+| < "/table" > : DEFAULT
+}
+
+< ROW >
+SKIP :
+{
+  < ~[ ] >
+| < "/tr" > : TABLA
+}
+
+< COL >
+SKIP :
+{
+  < ~[ ] >
+| < "/td" > : ROW
+}
+
+< NOMBRE >
+SKIP :
+{
+  < ~[ ] >
+}
+
+< VALOR > SKIP:
+{
+  < ~[ ] >
+}
+
+< LINK > SKIP:
+{
+  < ~[] >
+}
+
+< TEXT > SKIP :
+{
+	<  ~["<"] > : COL
+}
+
+/*________________________*/
 
 TOKEN :
 {
-  < INI : "<!DOCTYPE html>" >
-| < HTML : "<html>" >
-| < FHTML : "</html>">
-| < TAG	  : (["a"-"z","0"-"9"])+>
-| < VALUE : (~["\""])* >
-| < ATTRIBUTE : < TAG > "=\"" < VALUE > "\"" >
-| < SECTION: "<" < TAG > (< ATTRIBUTE >)*  (">"|"/>") >
-| < FSECTION: "</"<TAG>">" >
-| < TEXT :  (~["<"])* >
-| < BODY : (< SECTION><TEXT >)? (<FSECTION >)? >
+  	< INI : "<!DOCTYPE html>" >
+| 	< HTML : "<html>" >
+| 	< FHTML : "</html>">
+| 	< TABLE: "<table" > :TABLA
 }
+
+< TABLA > TOKEN [IGNORE_CASE] :
+{
+	< TROW : "<tr" >: ROW
+}
+
+< ROW > TOKEN [ IGNORE_CASE ] :
+{
+  < TCOL : "<td" > : COL
+}
+
+< COL > TOKEN [ IGNORE_CASE ] :
+{
+  < TEQUALS : "=" >
+| < TCLASS : "class" >
+| < TNAME : "name" >	: NOMBRE
+| < TPRICE : "price" >	: VALOR
+}
+
+< VALOR > TOKEN [ IGNORE_CASE ] :
+{
+  < TEXIT : ">" > : TEXT
+}
+
+< NOMBRE > TOKEN [ IGNORE_CASE] :
+{
+  < TLINK : "href" > : LINK
+}
+
+< LINK > TOKEN [IGNORE_CASE]:
+{
+ < TFLINK : ">" > : TEXT
+}
+
+< TEXT > TOKEN :
+{
+  < TTEXT : ~["<"] >
+}
+
+/*________________________*/
+
 
 String Start() :
 {
@@ -89,43 +171,24 @@ String Start() :
   Token t;
 }
 {
-  < INI > < HTML >
-  (
-    t = < BODY >
-    {
-      System.out.println(t.image);
-      //      if (t.image.equals("tr class=" + """+"normal"+"""))
-      //      {
-      //		s=Table();
-      //      }
-    }
+  < INI > < HTML > < TABLE >
+  (< TROW >
+    (< TCOL >
+     (< TCLASS > < TEQUALS >
+     	( (< TNAME > <TLINK ><TFLINK > t=<TTEXT>
+     	{
+     	  s = s + t.image + "\n";
+     	}
+     )|(
+     	    < TPRICE > < TEXIT > t=<TTEXT>
+     	{
+     	  s = s + t.image + "\t";
+     	})
+     	)
+      )
+    )+
   )+
   < FHTML >
-  {
-    return "hola";
-  }
-}
-
-
-String Table() :
-{
-  String s = "";
-  Token t = null, p= null;
-}
-{
-  (
-    (t = < SECTION >)? (p = < TEXT >) (< FSECTION >)?
-    {
-      if (t.image.startsWith("<a href=\""))
-      {
-        s = s + p + "\t";
-      }
-      if (t.image.equals("<td class=\"price top\""))
-      {
-        s = s + p + "\n";
-      }
-    }
-  )+
   {
     return s;
   }
