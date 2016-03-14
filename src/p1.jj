@@ -66,23 +66,7 @@ PARSER_END(Parser)
 
 SKIP :
 {
-  "\n"
-| "\r"
-| "\t"
-| " "
-| "<!--" : WithinComment
-}
-
-< WithinComment >
-SKIP :
-{
-  "-->" : DEFAULT
-}
-
-< WithingComment >
-MORE :
-{
-  < ~[ ] >
+ 	<	( " " | "\t" | "\n" | "\r" )+	>
 }
 
 TOKEN :
@@ -90,32 +74,61 @@ TOKEN :
   < INI : "<!DOCTYPE html>" >
 | < HTML : "<html>" >
 | < FHTML : "</html>">
-| < HEAD: "<head>" >
-| < FHEAD: "</head>" >
-| < BODY : "<body" (< ATTRIBUTE >)* ">" >
-| < FBODY : "</body>" >
-| < TAG : "<" (["a"-"z"])+ (<ATTRIBUTE>)* ">" >
-| < FTAG: "</" (<TAG>) ">" >
-| < ATTRIBUTE : (["a"-"z"])+ "=\"" (["a"-"z"])* "\"" >
-| < TEXT :  (~[<INI>,<HTML>])*  >
+| < TAG	  : (["a"-"z","0"-"9"])+>
+| < VALUE : (~["\""])* >
+| < ATTRIBUTE : < TAG > "=\"" < VALUE > "\"" >
+| < SECTION: "<" < TAG > (< ATTRIBUTE >)*  (">"|"/>") >
+| < FSECTION: "</"<TAG>">" >
+| < TEXT :  (~["<"])* >
+| < BODY : (< SECTION><TEXT >)? (<FSECTION >)? >
 }
 
 String Start() :
 {
+  String s = "";
   Token t;
 }
 {
-  < INI >
-  < HTML >
-  	< HEAD >
-  		< TEXT >
-  	< FHEAD >
-  	 t = < BODY >
-  	{ return t.image;
- 	}
-  	< FBODY >
+  < INI > < HTML >
+  (
+    t = < BODY >
+    {
+      System.out.println(t.image);
+      //      if (t.image.equals("tr class=" + """+"normal"+"""))
+      //      {
+      //		s=Table();
+      //      }
+    }
+  )+
   < FHTML >
+  {
+    return "hola";
+  }
 }
 
+
+String Table() :
+{
+  String s = "";
+  Token t = null, p= null;
+}
+{
+  (
+    (t = < SECTION >)? (p = < TEXT >) (< FSECTION >)?
+    {
+      if (t.image.startsWith("<a href=\""))
+      {
+        s = s + p + "\t";
+      }
+      if (t.image.equals("<td class=\"price top\""))
+      {
+        s = s + p + "\n";
+      }
+    }
+  )+
+  {
+    return s;
+  }
+}
 
 
