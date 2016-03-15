@@ -21,10 +21,15 @@ public class Parser
     URL url;
     InputStream is = null;
     BufferedReader br;
-    int i, input, ultimo;
+    BufferedWriter wr;
     String text;
-    String aux [] = new String [empresa];
-    String lines [] [] = new String [empresa] [2];
+    int i, input;
+    double last;
+    double value [] = new double [empresa];
+    String name [] = new String [empresa];
+    String lines [] = new String [empresa];
+    String par [] = new String [2];
+    //        NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
     try
     {
       //                String html = new Scanner(new URL("http://www.infobolsa.es/acciones/ibex35").openStream(), "UTF-8").useDelimiter("\\A").next();
@@ -36,24 +41,32 @@ public class Parser
       Parser parser = new Parser(is);
       text = parser.Start();
       System.out.println(text);
-      aux = text.split("\n");
+      lines = text.split("\n");
+      br = new BufferedReader(new FileReader("src/last.txt"));
       System.out.println("Introduce Numero de Empresa a consultar, 1-35");
       for (i = 0; i < empresa; i++)
       {
-        lines [i] = aux [i].split("\t");
-        System.out.printf("%d. %s\n", i + 1, lines [i] [0]);
+        par = lines [i].split("\t");
+        name [i] = par [0];
+        value [i] = Double.parseDouble(par [1]);
+        System.out.printf("%d. %s\t\t%.2f\n", i + 1, name [i], value [i]);
       }
       Scanner in = new Scanner(System.in);
       input = in.nextInt();
       //br.close();
-      br = new BufferedReader(new FileReader("p1/last.txt"));
       for (i = 0; i < input; i++)
       {
-        text = br.readLine();
+        text = (br.readLine());
       }
-      aux = text.split("\t");
-      ultimo = Integer.parseInt(aux [2]);
-      System.out.printf("Empresa %s, ultimo: %d anterior %d", lines [input] [0], lines [input] [1], ultimo);
+      br.close();
+      par = text.split("\t");
+      System.out.printf("Empresa %s, valor actual: %.2f anterior %.2f", name [input - 1], value [input - 1], Double.parseDouble(par [1]));
+      wr = new BufferedWriter(new FileWriter("src/last.txt"));
+      for (i = 0; i < empresa; i++)
+      {
+        wr.write(name [i] + "\t" + value [i] + "\n");
+      }
+      wr.close();
     }
     catch (MalformedURLException mue)
     {
@@ -66,6 +79,11 @@ public class Parser
     catch (IOException ioe)
     {
       ioe.printStackTrace();
+    }
+    catch (ParseException poe)
+    {
+      //      System.out.println(ParserTokenManager.curLexState);
+      poe.printStackTrace();
     }
   }
 }
@@ -82,21 +100,18 @@ SKIP :
 SKIP :
 {
   < ~[ ] >
-| < "/tbody" > : DEFAULT
 }
 
 < ROW >
 SKIP :
 {
   < ~[ ] >
-| < "/tr" > : TABLA
 }
 
 < COL >
 SKIP :
 {
   < ~[ ] >
-| < "/td" > : ROW
 }
 
 < NOMBRE >
@@ -108,19 +123,13 @@ SKIP :
 < VALOR >
 SKIP :
 {
-  < ~[ ] >
+  < (~[ ">" ]) >
 }
 
 < LINK >
 SKIP :
 {
-  < ~[ ] >
-}
-
-< TEXT >
-SKIP :
-{
-  < ~[ "<" ] > : COL
+  < ~[ ">" ] >
 }
 
 /*________________________*/
@@ -136,20 +145,22 @@ TOKEN :
 TOKEN [ IGNORE_CASE ] :
 {
   < TROW : "<tr" > : ROW
+| < FTABLA : "/tbody" > : DEFAULT
 }
 
 < ROW >
 TOKEN [ IGNORE_CASE ] :
 {
   < TCOL : "<td" > : COL
+| < FROW : "/tr" > : TABLA
 }
 
 < COL >
 TOKEN [ IGNORE_CASE ] :
 {
-//  < TCLASS : "class=" >
- < TNAME : "name" > : NOMBRE
+  < TFCOL : "/td" > : ROW
 | < TPRICE : "price" > : VALOR
+| < TNAME : "name" > : NOMBRE
 }
 
 < VALOR >
@@ -167,20 +178,21 @@ TOKEN [ IGNORE_CASE ] :
 < LINK >
 TOKEN [ IGNORE_CASE ] :
 {
-  < TFLINK : ">" > : TEXT
+  < THREF : ">" > : TEXT
 }
 
 < TEXT >
 TOKEN :
 {
-  < TTEXT : ~[ "<" ] >
+  < TTEXT : (~[ "<" ])* >
+| < FTEXT : "<" > : COL
 }
 
 /*________________________*/
 String Start() :
 {
   String s = "";
-  Token t;
+  Token t, t1, t2, t3, t4, t5, t6;
 }
 {
   < INI > < HTML > < TABLE >
@@ -189,22 +201,27 @@ String Start() :
     (
       < TCOL >
       (
-        (< TNAME > < TLINK > < TFLINK > t = < TTEXT >
-        {
-          s = s + t.image + "\n";
-        }
+        (
+          < TNAME > < TLINK > < THREF > t = < TTEXT > < FTEXT > < TFCOL >
+          {
+            s = s + t.image.trim() + "\t";
+          }
         )
-      | (< TPRICE > < TEXIT > t = < TTEXT >
-        {
-          s = s + t.image + "\t";
-        }
+      |
+        (
+          < TPRICE > < TEXIT > t = < TTEXT > < FTEXT > < TFCOL >
+          {
+            String value = t.image.trim().replaceAll(",", ".");
+            s = s + value + "\n";
+          }
         )
+      | (< TFCOL >)
       )
     )+
+    < FROW >
   )+
-  < FHTML >
+  < FTABLA > < FHTML >
   {
     return s;
   }
 }
-

@@ -9,25 +9,81 @@ public interface ParserConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int INI = 3;
+  int INI = 8;
   /** RegularExpression Id. */
-  int BODY = 4;
+  int HTML = 9;
   /** RegularExpression Id. */
-  int FBODY = 5;
+  int FHTML = 10;
+  /** RegularExpression Id. */
+  int TABLE = 11;
+  /** RegularExpression Id. */
+  int TROW = 12;
+  /** RegularExpression Id. */
+  int FTABLA = 13;
+  /** RegularExpression Id. */
+  int TCOL = 14;
+  /** RegularExpression Id. */
+  int FROW = 15;
+  /** RegularExpression Id. */
+  int TFCOL = 16;
+  /** RegularExpression Id. */
+  int TPRICE = 17;
+  /** RegularExpression Id. */
+  int TNAME = 18;
+  /** RegularExpression Id. */
+  int TEXIT = 19;
+  /** RegularExpression Id. */
+  int TLINK = 20;
+  /** RegularExpression Id. */
+  int THREF = 21;
+  /** RegularExpression Id. */
+  int TTEXT = 22;
+  /** RegularExpression Id. */
+  int FTEXT = 23;
 
   /** Lexical state. */
   int DEFAULT = 0;
   /** Lexical state. */
-  int WithinComment = 1;
+  int TABLA = 1;
+  /** Lexical state. */
+  int ROW = 2;
+  /** Lexical state. */
+  int COL = 3;
+  /** Lexical state. */
+  int NOMBRE = 4;
+  /** Lexical state. */
+  int VALOR = 5;
+  /** Lexical state. */
+  int LINK = 6;
+  /** Lexical state. */
+  int TEXT = 7;
 
   /** Literal token values. */
   String[] tokenImage = {
     "<EOF>",
-    "\"/*\"",
-    "\"/*\"",
-    "<INI>",
-    "\"<tbody>\"",
-    "\"</tbody>\"",
+    "<token of kind 1>",
+    "<token of kind 2>",
+    "<token of kind 3>",
+    "<token of kind 4>",
+    "<token of kind 5>",
+    "<token of kind 6>",
+    "<token of kind 7>",
+    "\"<!DOCTYPE html>\"",
+    "\"<html>\"",
+    "\"</html>\"",
+    "\"<tbody\"",
+    "\"<tr\"",
+    "\"/tbody\"",
+    "\"<td\"",
+    "\"/tr\"",
+    "\"/td\"",
+    "\"price\"",
+    "\"name\"",
+    "\">\"",
+    "\"href\"",
+    "\">\"",
+    "<TTEXT>",
+    "\"<\"",
   };
 
 }

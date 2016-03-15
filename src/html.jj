@@ -1,3 +1,5 @@
+//Parser Adaptado de http://mindprod.com/javacc/html-3.2.jjt
+
 PARSER_BEGIN(html)
 
 class html {
