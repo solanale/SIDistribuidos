@@ -5,13 +5,25 @@
 import org.apache.jena.query.*;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import twitter4j.*;
 
 public class P3
 {
-    public static void main(String[] args)
-    {
-
+    public static void main(String[] args) throws TwitterException {
         Logger.getRootLogger().setLevel(Level.INFO);    //Elimina los warnings
+
+        Twitter twitter = new TwitterFactory().getInstance();
+        ResponseList<Location> locations;
+        locations = twitter.getAvailableTrends();
+        int woeid = 0;
+        for (Location location: locations){
+            if(location.getCountryName().equals("Spain"))  woeid = location.getWoeid();
+        }
+        Trends trends = twitter.getPlaceTrends(woeid);
+        for (int i = 0; i < trends.getTrends().length;i++){
+
+        }
+
         String tendencias[] = {"Neymar", "Iago_Aspas", "Ilegales"};
         for (String tendencia : tendencias)
         {
