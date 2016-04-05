@@ -7,10 +7,15 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import twitter4j.*;
 
+import java.util.ArrayList;
+
 public class P3
 {
     public static void main(String[] args) throws TwitterException {
+
         Logger.getRootLogger().setLevel(Level.INFO);    //Elimina los warnings
+        ArrayList<String> tendencias  = new ArrayList<String>();
+        tendencias.add("Neymar"); tendencias.add("Iago_Aspas"); tendencias.add("Ilegales");
 
         Twitter twitter = new TwitterFactory().getInstance();
         ResponseList<Location> locations;
@@ -20,11 +25,12 @@ public class P3
             if(location.getCountryName().equals("Spain"))  woeid = location.getWoeid();
         }
         Trends trends = twitter.getPlaceTrends(woeid);
-        for (int i = 0; i < trends.getTrends().length;i++){
-
+        for (int i = tendencias.size(); i < trends.getTrends().length;i++){
+            tendencias.add(trends.getTrends()[i].getName().trim().replace("#","").replace(" ","_"));
+            //System.out.println(tendencias.get(i));
         }
 
-        String tendencias[] = {"Neymar", "Iago_Aspas", "Ilegales"};
+        //String tendencias[] = {"Neymar", "Iago_Aspas", "Ilegales", "Beatles"};
         for (String tendencia : tendencias)
         {
             String sparqlEndpoint = "http://dbpedia.org/sparql";
@@ -44,7 +50,9 @@ public class P3
                     sparqlEndpoint, query );
             try {
                 ResultSet results = exec.execSelect();
-                ResultSetFormatter.out(System.out, results, query);
+                if(results.hasNext()) {
+                    ResultSetFormatter.out(System.out, results, query);
+                }
 
             } finally {
                 exec.close();
