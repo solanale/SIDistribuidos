@@ -27,7 +27,7 @@ public class P3
             System.out.println("");
         }else{
             for (int i = 0; i<args.length; i++){
-                tendencias.add(args[i]);
+                tendencias.add(args[0]);
             }
         }
 
