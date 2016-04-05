@@ -1,3 +1,0 @@
-* La forma de imprimir por pantalla
-* El basic configurator
-*
