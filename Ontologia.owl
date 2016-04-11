@@ -1,0 +1,303 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://sid.cps.unizar.es/"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://sid.cps.unizar.es/">
+    <Prefix name="" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Declaration>
+        <Class IRI="AficionadoDeGatos"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="Anciano"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="Animal"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="DueñoDeGato"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="DueñoDeMascota"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="Gato"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="Hembra"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="Hombre"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="Humano"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="Macho"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="Mujer"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="Perro"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="SerVivo"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="ViejecitaConGatos"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="esMascotaDe"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="gusta"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="tieneMascota"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="edad"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="CrazyCatLady"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="EleanorAbernathy"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="Garfield"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="Silvestre"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="Snoopy"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="Tom"/>
+    </Declaration>
+    <EquivalentClasses>
+        <Class IRI="Anciano"/>
+        <ObjectIntersectionOf>
+            <Class IRI="Humano"/>
+            <DataSomeValuesFrom>
+                <DataProperty IRI="edad"/>
+                <DatatypeRestriction>
+                    <Datatype abbreviatedIRI="xsd:int"/>
+                    <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">65</Literal>
+                    </FacetRestriction>
+                </DatatypeRestriction>
+            </DataSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="Hombre"/>
+        <ObjectIntersectionOf>
+            <Class IRI="Humano"/>
+            <Class IRI="Macho"/>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="Mujer"/>
+        <ObjectIntersectionOf>
+            <Class IRI="Hembra"/>
+            <Class IRI="Humano"/>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="ViejecitaConGatos"/>
+        <ObjectIntersectionOf>
+            <Class IRI="Mujer"/>
+            <ObjectMinCardinality cardinality="3">
+                <ObjectProperty IRI="tieneMascota"/>
+            </ObjectMinCardinality>
+            <DataSomeValuesFrom>
+                <DataProperty IRI="edad"/>
+                <DatatypeRestriction>
+                    <Datatype abbreviatedIRI="xsd:int"/>
+                    <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">70</Literal>
+                    </FacetRestriction>
+                </DatatypeRestriction>
+            </DataSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <SubClassOf>
+        <Class IRI="AficionadoDeGatos"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="tieneMascota"/>
+            <Class IRI="Gato"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="Anciano"/>
+        <Class IRI="Humano"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="Animal"/>
+        <Class IRI="SerVivo"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="DueñoDeGato"/>
+        <ObjectMinCardinality cardinality="1">
+            <ObjectProperty IRI="tieneMascota"/>
+            <Class IRI="Gato"/>
+        </ObjectMinCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="DueñoDeMascota"/>
+        <ObjectMinCardinality cardinality="1">
+            <ObjectProperty IRI="tieneMascota"/>
+        </ObjectMinCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="Gato"/>
+        <Class IRI="Animal"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="Hembra"/>
+        <Class IRI="SerVivo"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="Hombre"/>
+        <Class IRI="Humano"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="Humano"/>
+        <Class IRI="Animal"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="Macho"/>
+        <Class IRI="SerVivo"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="Mujer"/>
+        <Class IRI="Humano"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="Perro"/>
+        <Class IRI="Animal"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="ViejecitaConGatos"/>
+        <Class IRI="Mujer"/>
+    </SubClassOf>
+    <DisjointClasses>
+        <Class IRI="Gato"/>
+        <Class IRI="Humano"/>
+        <Class IRI="Perro"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="Hembra"/>
+        <Class IRI="Macho"/>
+    </DisjointClasses>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="CrazyCatLady"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="ViejecitaConGatos"/>
+        <NamedIndividual IRI="EleanorAbernathy"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="Gato"/>
+        <NamedIndividual IRI="Garfield"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="Gato"/>
+        <NamedIndividual IRI="Loli"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="Gato"/>
+        <NamedIndividual IRI="Lulu"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="Gato"/>
+        <NamedIndividual IRI="Nico"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="Gato"/>
+        <NamedIndividual IRI="Silvestre"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="Perro"/>
+        <NamedIndividual IRI="Snoopy"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="Perro"/>
+        <NamedIndividual IRI="Tobi"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="Tom"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="Perro"/>
+        <AnonymousIndividual nodeID="_:http://sid.cps.unizar.es/Tobi"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="Perro"/>
+        <AnonymousIndividual nodeID="_:http://sid.cps.unizar.es/tobi"/>
+    </ClassAssertion>
+    <SameIndividual>
+        <NamedIndividual IRI="CrazyCatLady"/>
+        <NamedIndividual IRI="EleanorAbernathy"/>
+    </SameIndividual>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="esMascotaDe"/>
+        <NamedIndividual IRI="Garfield"/>
+        <NamedIndividual IRI="EleanorAbernathy"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="esMascotaDe"/>
+        <NamedIndividual IRI="Tom"/>
+        <NamedIndividual IRI="EleanorAbernathy"/>
+    </ObjectPropertyAssertion>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="tieneMascota"/>
+        <ObjectProperty IRI="gusta"/>
+    </SubObjectPropertyOf>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="esMascotaDe"/>
+        <ObjectProperty IRI="tieneMascota"/>
+    </InverseObjectProperties>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="tieneMascota"/>
+        <ObjectIntersectionOf>
+            <Class IRI="Animal"/>
+            <ObjectComplementOf>
+                <Class IRI="Humano"/>
+            </ObjectComplementOf>
+        </ObjectIntersectionOf>
+    </ObjectPropertyRange>
+    <FunctionalDataProperty>
+        <DataProperty IRI="edad"/>
+    </FunctionalDataProperty>
+    <DataPropertyDomain>
+        <DataProperty IRI="edad"/>
+        <Class IRI="SerVivo"/>
+    </DataPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty IRI="edad"/>
+        <DatatypeRestriction>
+            <Datatype abbreviatedIRI="xsd:int"/>
+            <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+                <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">0</Literal>
+            </FacetRestriction>
+        </DatatypeRestriction>
+    </DataPropertyRange>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 1.3.8.1099) http://owlapi.sourceforge.net -->
+
