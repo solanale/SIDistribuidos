@@ -1,4 +1,4 @@
-package com.sid.practica4;
+package com.sid.practica5;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

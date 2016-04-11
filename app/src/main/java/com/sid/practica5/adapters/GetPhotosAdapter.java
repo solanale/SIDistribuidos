@@ -1,10 +1,10 @@
-package com.sid.practica4.adapters;
+package com.sid.practica5.adapters;
 
 import android.os.AsyncTask;
 
-import com.sid.practica4.MainActivity;
-import com.sid.practica4.models.Photo;
-import com.sid.practica4.util.Constants;
+import com.sid.practica5.MainActivity;
+import com.sid.practica5.models.Photo;
+import com.sid.practica5.util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;

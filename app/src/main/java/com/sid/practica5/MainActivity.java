@@ -1,15 +1,14 @@
-package com.sid.practica4;
+package com.sid.practica5;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.sid.practica4.adapters.GetPhotosAdapter;
-import com.sid.practica4.models.Photo;
+import com.sid.practica5.adapters.GetPhotosAdapter;
+import com.sid.practica5.models.Photo;
 
 import java.io.IOException;
 import java.util.List;
