@@ -46,8 +46,6 @@ public class GetPhotosAdapter extends AsyncTask<String, String, String> {
             httpUrlConnection.setReadTimeout(15000);
             httpUrlConnection.setConnectTimeout(15000);
             httpUrlConnection.setRequestMethod("GET");
-            //httpUrlConnection.setRequestProperty(Constants.HEADER_TOKEN, UserSessionManager.getToken());
-            //httpUrlConnection.setRequestProperty(Constants.HEADER_EMAIL, UserSessionManager.getEmail());
             httpUrlConnection.setDoInput(true);
 
             int status = httpUrlConnection.getResponseCode();
@@ -145,7 +143,7 @@ public class GetPhotosAdapter extends AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        mainActivity.showPhotos(photos);
+        //mainActivity.showPhotos(photos);
     }
 
     private List<Photo> getImagesFromJSON(String json) {
