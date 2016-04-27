@@ -1,14 +1,18 @@
 package com.sid.practica5;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 
 import com.sid.practica5.adapters.GetPhotosAdapter;
+import com.sid.practica5.adapters.MyWorkerThread;
 import com.sid.practica5.adapters.PhotosAdapter;
 import com.sid.practica5.models.Photo;
 
@@ -16,12 +20,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyWorkerThread.Callback{
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private PhotosAdapter pa;
     private GetPhotosAdapter photosAdapter;
+    private MyWorkerThread handlerThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +44,30 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        handlerThread = new MyWorkerThread(new Handler(), this);
+        handlerThread.start();
+        handlerThread.prepareHandler();
+
     }
 
-    /*public void showPhotos(List<Photo> photos) {
-        TextView texto = (TextView) findViewById(R.id.textoTitulos);
-        texto.setText("");
-        for (Photo photo : photos) {
-            texto.append(photo.getTitle() + "\n\n");
+    public void showPhotos(List<Photo> photos) {
+//        TextView texto = (TextView) findViewById(R.id.textoTitulos);
+//        texto.setText("");
+//        for (Photo photo : photos) {
+//            texto.append(photo.getTitle() + "\n\n");
+//
+//        }
 
+        for (Photo photo : photos) {
+            System.err.println(photo.getTitle());
         }
-    }*/
+        String[] urls = new String[]{"http://developer.android.com/design/media/principles_delight.png", "http://developer.android.com/design/media/principles_real_objects.png", "http://developer.android.com/design/media/principles_make_it_mine.png", "http://developer.android.com/design/media/principles_get_to_know_me.png"};
+
+        for (String url : urls) {
+            handlerThread.queueTask(url, 2, new ImageView(this));
+        }
+    }
 
     public static List<Photo> getData() {
         List<Photo> data = new ArrayList<>();
@@ -69,5 +89,10 @@ public class MainActivity extends AppCompatActivity {
         if (networkInfo == null | (networkInfo != null && !networkInfo.isConnected())) {
             throw new IOException();
         }
+    }
+
+    @Override
+    public void onImageDownloaded(ImageView imageView, Bitmap bitmap, int side) {
+        System.err.println("OPPPP");
     }
 }

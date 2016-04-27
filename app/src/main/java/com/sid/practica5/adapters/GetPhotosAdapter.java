@@ -49,7 +49,7 @@ public class GetPhotosAdapter extends AsyncTask<String, String, String> {
             httpUrlConnection.setDoInput(true);
 
             int status = httpUrlConnection.getResponseCode();
-
+            //System.err.println(status);
             if (status == HttpURLConnection.HTTP_OK) {
                 getResponse(httpUrlConnection.getInputStream());
                 getImagesFromJSON(response.toString());
@@ -60,6 +60,7 @@ public class GetPhotosAdapter extends AsyncTask<String, String, String> {
                     responseMessage = getErrorMessageFromHson(response.toString());
                 }
             }
+            httpUrlConnection.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -143,7 +144,7 @@ public class GetPhotosAdapter extends AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        //mainActivity.showPhotos(photos);
+        mainActivity.showPhotos(photos);
     }
 
     private List<Photo> getImagesFromJSON(String json) {

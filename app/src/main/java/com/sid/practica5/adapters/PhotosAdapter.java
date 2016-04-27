@@ -1,6 +1,8 @@
 package com.sid.practica5.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,6 @@ import android.widget.TextView;
 import com.sid.practica5.R;
 import com.sid.practica5.models.Photo;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,9 +23,10 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.MyViewHold
     private LayoutInflater inflater;
     List<Photo> data = Collections.emptyList();
 
-    public PhotosAdapter(Context context, List<Photo>   data) {
-        inflater = LayoutInflater.from(context);
+    public PhotosAdapter(Context context, List<Photo> data) {
+        this.inflater = LayoutInflater.from(context);
         this.data = data;
+
     }
 
 
@@ -46,6 +48,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.MyViewHold
     public int getItemCount() {
         return data.size();
     }
+
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title;
