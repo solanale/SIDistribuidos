@@ -3,6 +3,7 @@ package com.sid.practica5.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,19 +15,23 @@ import com.sid.practica5.R;
 import com.sid.practica5.models.Photo;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by phyrion on 18/04/16.
  */
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.MyViewHolder> {
+    private final MyWorkerThread handlerThread;
     private LayoutInflater inflater;
     List<Photo> data = Collections.emptyList();
+    private Map<String, Bitmap> mapPhotos = new HashMap<>();
 
-    public PhotosAdapter(Context context, List<Photo> data) {
+    public PhotosAdapter(Context context, List<Photo> data, MyWorkerThread handlerThread) {
         this.inflater = LayoutInflater.from(context);
         this.data = data;
-
+        this.handlerThread = handlerThread;
     }
 
 
@@ -39,9 +44,15 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+        //https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
         Photo current = data.get(position);
         holder.title.setText(current.getTitle());
-        holder.icon.setImageResource(R.mipmap.ic_launcher);
+        //holder.icon.setImageResource(R.mipmap.ic_launcher);
+        if (mapPhotos.containsKey(current.getUrl())) {
+            holder.icon.setImageBitmap(mapPhotos.get(current.getUrl()));
+        } else {
+            this.handlerThread.queueTask(current.getUrl(), holder);
+        }
     }
 
     @Override
@@ -50,7 +61,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.MyViewHold
     }
 
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         ImageView icon;
 
@@ -58,6 +69,11 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.MyViewHold
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.listText);
             icon = (ImageView) itemView.findViewById(R.id.listIcon);
+        }
+
+        public void putPhoto(Bitmap bitmap, String url) {
+            mapPhotos.put(url, bitmap);
+            icon.setImageBitmap(bitmap);
         }
     }
 }

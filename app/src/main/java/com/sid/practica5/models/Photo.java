@@ -13,6 +13,7 @@ public class Photo {
     private boolean isPublic;
     private boolean isFriend;
     private boolean isFamily;
+    private String url;
 
     public Photo(String id, String owner, String secret, String server,
                  String farm, String title, boolean isPublic, boolean isFriend, boolean isFamily) {
@@ -25,6 +26,8 @@ public class Photo {
         this.title = title;
         this.isPublic = isPublic;
         this.isFriend = isFriend;
+        this.url = "https://farm" + farm + ".staticflickr.com/" +
+                server + "/" + id+ "_" + secret + "_m.jpg";
     }
 
     public String getId() {
@@ -97,5 +100,9 @@ public class Photo {
 
     public void setIsFamily(boolean isFamily) {
         this.isFamily = isFamily;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

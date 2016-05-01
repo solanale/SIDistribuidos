@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,14 +31,15 @@ public class MainActivity extends AppCompatActivity implements MyWorkerThread.Ca
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        pa = new PhotosAdapter(this, getData());
-        System.out.println("aa->" + pa);
-        recyclerView.setAdapter(pa);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         try {
             checkNetworkConnection();
             new GetPhotosAdapter(this).execute();
@@ -58,15 +60,16 @@ public class MainActivity extends AppCompatActivity implements MyWorkerThread.Ca
 //            texto.append(photo.getTitle() + "\n\n");
 //
 //        }
-
-        for (Photo photo : photos) {
-            System.err.println(photo.getTitle());
-        }
-        String[] urls = new String[]{"http://developer.android.com/design/media/principles_delight.png", "http://developer.android.com/design/media/principles_real_objects.png", "http://developer.android.com/design/media/principles_make_it_mine.png", "http://developer.android.com/design/media/principles_get_to_know_me.png"};
-
-        for (String url : urls) {
-            handlerThread.queueTask(url, 2, new ImageView(this));
-        }
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        pa = new PhotosAdapter(this, photos, handlerThread);
+        System.out.println("aa->" + pa);
+        recyclerView.setAdapter(pa);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        String[] urls = new String[]{"http://developer.android.com/design/media/principles_delight.png", "http://developer.android.com/design/media/principles_real_objects.png", "http://developer.android.com/design/media/principles_make_it_mine.png", "http://developer.android.com/design/media/principles_get_to_know_me.png"};
+//
+//        for (String url : urls) {
+//            handlerThread.queueTask(url, 2, new ImageView(this));
+//        }
     }
 
     public static List<Photo> getData() {
@@ -91,8 +94,10 @@ public class MainActivity extends AppCompatActivity implements MyWorkerThread.Ca
         }
     }
 
+
     @Override
-    public void onImageDownloaded(ImageView imageView, Bitmap bitmap, int side) {
-        System.err.println("OPPPP");
+    public void onImageDownloaded(PhotosAdapter.MyViewHolder holder, Bitmap bitmap, String url) {
+        holder.putPhoto(bitmap, url);
     }
+
 }

@@ -28,11 +28,11 @@ public class MyWorkerThread extends HandlerThread {
     private Handler mWorkerHandler;
     private Handler mResponseHandler;
     private static final String TAG = MyWorkerThread.class.getSimpleName();
-    private Map<ImageView, String> mRequestMap =  new HashMap<>();
+    private Map<String, PhotosAdapter.MyViewHolder> mRequestMap =  new HashMap<>();
     private Callback mCallback;
 
     public interface Callback {
-        void onImageDownloaded(ImageView imageView, Bitmap bitmap, int side);
+        void onImageDownloaded(PhotosAdapter.MyViewHolder holder, Bitmap bitmap, String url);
     }
 
     public MyWorkerThread(Handler mResponseHandler, Callback callback) {
@@ -41,51 +41,38 @@ public class MyWorkerThread extends HandlerThread {
         this.mCallback = callback;
     }
 
-    public void queueTask(String url, int side, ImageView imageView) {
-        mRequestMap.put(imageView, url);
+    public void queueTask(String url, PhotosAdapter.MyViewHolder holder) {
+        mRequestMap.put(url, holder);
         Log.i(TAG, url + " added to the queue");
-        mWorkerHandler.obtainMessage(side, imageView).sendToTarget();
+        mWorkerHandler.obtainMessage(MyWorkerThread.NORM_PRIORITY, url).sendToTarget();
     }
 
     public void prepareHandler() {
         mWorkerHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                try {
-                    TimeUnit.SECONDS.sleep(2);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-                ImageView imageView = (ImageView) msg.obj;
-                //String side = msg.what == MainActivity.LEFT
-                Log.i(TAG, String.format("Procesing %s", mRequestMap.get(imageView)));
-                handleRequest(imageView, msg.what);
-                msg.recycle();
+                String url = (String) msg.obj;
+
+                Log.i(TAG, String.format("Procesing %s", mRequestMap.get(url)));
+                handleRequest(url, msg.what);
                 return true;
             }
 
         });
     }
 
-    private void handleRequest(final ImageView imageView, final int side) {
-        //String url = mRequestMap.get(imageView);
+    private void handleRequest(final String url, final int side) {
+        final PhotosAdapter.MyViewHolder holder = mRequestMap.get(url);
         try {
-            URL url = new URL(Constants.GET_PHOTOS_URL);
+            //URL url = new URL(Constants.GET_PHOTOS_URL);
 
-            HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection();
-            httpUrlConnection.setReadTimeout(15000);
-            httpUrlConnection.setConnectTimeout(15000);
-            httpUrlConnection.setRequestMethod("GET");
-            httpUrlConnection.setDoInput(true);
-
-            int status = httpUrlConnection.getResponseCode();
-            System.err.println("aaaaaaa-----" + httpUrlConnection.getResponseCode());
-            //final Bitmap bitmap = BitmapFactory.decodeStream((connection.getInputStream()));
-            mRequestMap.remove(imageView);
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            final Bitmap bitmap = BitmapFactory .decodeStream((InputStream) connection.getContent());
+            mRequestMap.remove(url);
             mResponseHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mCallback.onImageDownloaded(imageView, null, side);
+                    mCallback.onImageDownloaded(holder, bitmap, url);
                 }
             });
         } catch (IOException e) {
