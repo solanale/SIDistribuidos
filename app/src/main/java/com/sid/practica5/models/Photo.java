@@ -1,8 +1,14 @@
+/**
+ * Autores: Rubén Gabás Celimendiz, Alejandro Solanas Bonilla
+ * NIA: 590738, 647647
+ * Fichero: Photo.java
+ * Fecha: 3/5/2015
+ * Funcionalidad: Creación y definición del objeto foto, con sus parametros y metodos correspondientes
+ */
+
 package com.sid.practica5.models;
 
-/**
- * Created by phyrion on 4/04/16.
- */
+
 public class Photo {
     private String id;
     private String owner;
@@ -15,6 +21,18 @@ public class Photo {
     private boolean isFamily;
     private String url;
 
+    /**
+     * Constructor de la clase Photo
+     * @param id
+     * @param owner
+     * @param secret
+     * @param server
+     * @param farm
+     * @param title
+     * @param isPublic
+     * @param isFriend
+     * @param isFamily
+     */
     public Photo(String id, String owner, String secret, String server,
                  String farm, String title, boolean isPublic, boolean isFriend, boolean isFamily) {
         this.id = id;
@@ -30,6 +48,7 @@ public class Photo {
                 server + "/" + id+ "_" + secret + "_m.jpg";
     }
 
+    /** Getters & Setters **/
     public String getId() {
         return id;
     }

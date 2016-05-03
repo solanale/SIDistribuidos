@@ -1,3 +1,10 @@
+/**
+ * Autores: Rubén Gabás Celimendiz, Alejandro Solanas Bonilla
+ * NIA: 590738, 647647
+ * Fichero: ApplicationTest.java
+ * Fecha: 3/5/2015
+ */
+
 package com.sid.practica5;
 
 import android.app.Application;

@@ -1,3 +1,13 @@
+/**
+ * Autores: Rubén Gabás Celimendiz, Alejandro Solanas Bonilla
+ * NIA: 590738, 647647
+ * Fichero: MainActivity.java
+ * Fecha: 3/5/2015
+ * Funcionalidad: Modulo principal del sistema, establece la conexion con el servidor haciendo las
+ *                peticiones a través del adapter,lanzando los Threads secundarios y creando la vista
+ *                de la aplicación mediante un RecyclerView
+ */
+
 package com.sid.practica5;
 
 import android.content.Context;

@@ -1,3 +1,12 @@
+/**
+ * Autores: Rubén Gabás Celimendiz, Alejandro Solanas Bonilla
+ * NIA: 590738, 647647
+ * Fichero: GetPhotosAdapter.java
+ * Fecha: 3/5/2015
+ * Funcionalidad: Adapter responsable de hacer peticiones al servicio y conseguir información relativa
+ *                  a las fotos obtenidas
+ */
+
 package com.sid.practica5.adapters;
 
 import android.os.AsyncTask;
@@ -19,9 +28,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by phyrion on 4/04/16.
- */
 public class GetPhotosAdapter extends AsyncTask<String, String, String> {
     private static final String CODIFICATION = "UTF-8";
 
@@ -34,8 +40,6 @@ public class GetPhotosAdapter extends AsyncTask<String, String, String> {
     public GetPhotosAdapter(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
-
-
 
     @Override
     protected String doInBackground(String... params) {

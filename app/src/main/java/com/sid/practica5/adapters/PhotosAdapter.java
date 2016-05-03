@@ -1,3 +1,11 @@
+/**
+ * Autores: Rubén Gabás Celimendiz, Alejandro Solanas Bonilla
+ * NIA: 590738, 647647
+ * Fichero: PhotosAdapter.java
+ * Fecha: 3/5/2015
+ * Funcionalidad: Adapter encargado de gestionar la vista de imagenes
+ */
+
 package com.sid.practica5.adapters;
 
 import android.content.Context;
@@ -19,9 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by phyrion on 18/04/16.
- */
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.MyViewHolder> {
     private final MyWorkerThread handlerThread;
     private LayoutInflater inflater;

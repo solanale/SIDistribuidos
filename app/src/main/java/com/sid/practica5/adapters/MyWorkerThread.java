@@ -1,3 +1,11 @@
+/**
+ * Autores: Rubén Gabás Celimendiz, Alejandro Solanas Bonilla
+ * NIA: 590738, 647647
+ * Fichero: MyWorkerThread.java
+ * Fecha: 3/5/2015
+ * Funcionalidad: Adapter encargado de hacer las peticiones y descarga de imagenes
+ */
+
 package com.sid.practica5.adapters;
 
 import android.graphics.Bitmap;
@@ -21,9 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by phyrion on 26/04/16.
- */
 public class MyWorkerThread extends HandlerThread {
     private Handler mWorkerHandler;
     private Handler mResponseHandler;
