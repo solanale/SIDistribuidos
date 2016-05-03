@@ -1,3 +1,12 @@
+/**
+ * Autores: Rubén Gabás Celimendiz, Alejandro Solanas Bonilla
+ * NIA: 590738, 647647
+ * Fichero: MainActivity.java
+ * Fecha: 3/5/2015
+ * Funcionalidad: Modulo principal del sistema, establece la conexion con el servidor haciendo las
+ *                peticiones a través del adapter basadas en una localizacion
+ */
+
 package com.sid.practica6;
 
 import android.Manifest;

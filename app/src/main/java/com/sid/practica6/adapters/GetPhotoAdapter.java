@@ -1,3 +1,11 @@
+/**
+ * Autores: Rubén Gabás Celimendiz, Alejandro Solanas Bonilla
+ * NIA: 590738, 647647
+ * Fichero: GetPhotoAdapter.java
+ * Fecha: 3/5/2015
+ * Funcionalidad: Adapter que recupera la imagen del servicio a partir de la url
+ */
+
 package com.sid.practica6.adapters;
 
 import android.graphics.Bitmap;
@@ -13,9 +21,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by phyrion on 3/05/16.
- */
 public class GetPhotoAdapter extends AsyncTask<String, Void, Integer> {
 
     private final Photo photo;
