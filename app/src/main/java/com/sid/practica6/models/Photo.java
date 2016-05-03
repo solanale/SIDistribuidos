@@ -4,6 +4,7 @@ package com.sid.practica6.models;
  * Created by phyrion on 4/04/16.
  */
 public class Photo {
+    private final String url;
     private String id;
     private String owner;
     private String secret;
@@ -25,6 +26,12 @@ public class Photo {
         this.title = title;
         this.isPublic = isPublic;
         this.isFriend = isFriend;
+        this.url = "https://farm" + farm + ".staticflickr.com/" +
+                server + "/" + id+ "_" + secret + ".jpg";
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public String getId() {

@@ -25,11 +25,12 @@ import java.util.List;
 public class GetPhotosAdapter extends AsyncTask<String, String, String> {
     private static final String CODIFICATION = "UTF-8";
 
-    private List photos;
+    private List<Photo> photos;
     private MainActivity mainActivity;
     private StringBuilder response = new StringBuilder();
     private String responseMessage;
     private int responseCode = -1;
+    private GetPhotoAdapter getPhotoAdapter;
 
     public GetPhotosAdapter(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -40,8 +41,8 @@ public class GetPhotosAdapter extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         try {
-            URL url = new URL(Constants.GET_PHOTOS_URL);
-
+            URL url = new URL(params[0]);
+            System.err.println(params[0]);
             HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection();
             httpUrlConnection.setReadTimeout(15000);
             httpUrlConnection.setConnectTimeout(15000);
@@ -145,12 +146,15 @@ public class GetPhotosAdapter extends AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        mainActivity.showPhotos(photos);
+        System.out.println(photos.get(0).getUrl());
+        getPhotoAdapter = new GetPhotoAdapter(this.mainActivity, photos.get(0));
+        getPhotoAdapter.execute();
     }
 
     private List<Photo> getImagesFromJSON(String json) {
         photos = new ArrayList<>();
         try {
+            System.err.println(json);
             JSONObject o = new JSONObject(json);
             JSONObject o2 = new JSONObject(o.getString("photos"));
             JSONArray images = o2.getJSONArray("photo");
