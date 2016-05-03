@@ -1,3 +1,10 @@
+/**
+ * Autores: Rubén Gabás Celimendiz, Alejandro Solanas Bonilla
+ * NIA: 590738, 647647
+ * Fichero: GetPhotosAdapter.java
+ * Fecha: 2/5/2015
+ */
+
 package com.sid.practica4.adapters;
 
 import android.os.AsyncTask;
@@ -20,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by phyrion on 4/04/16.
+ * Clase Adapter, con los métodos disponibles para hacer las peticiones al servicio Web
  */
 public class GetPhotosAdapter extends AsyncTask<String, String, String> {
     private static final String CODIFICATION = "UTF-8";

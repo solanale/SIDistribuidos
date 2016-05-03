@@ -1,3 +1,11 @@
+/**
+ * Autores: Rubén Gabás Celimendiz, Alejandro Solanas Bonilla
+ * NIA: 590738, 647647
+ * Fichero: Constants.java
+ * Fecha: 2/5/2015
+ * Funcionalidad: Definición de valores para trabajar con la api de Flickr
+ */
+
 package com.sid.practica4.util;
 
 /**

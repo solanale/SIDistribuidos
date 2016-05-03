@@ -1,3 +1,12 @@
+/**
+ * Autores: Rubén Gabás Celimendiz, Alejandro Solanas Bonilla
+ * NIA: 590738, 647647
+ * Fichero: MainActivity.java
+ * Fecha: 2/5/2015
+ * Funcionalidad: Modulo principal del sistema, establece la conexion con el servidor haciendo las
+ *                peticiones a través del adapter y mostrando los titulos de las fotos
+ */
+
 package com.sid.practica4;
 
 import android.content.Context;
