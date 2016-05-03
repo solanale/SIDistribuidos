@@ -130,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public void setViewContent(Bitmap bitmap, String title) {
         ivPhoto.setImageBitmap(bitmap);
-        txTitle.setText(title);
+        txTitle.setText("Título: " + title + "\nLatitud: " +
+                            location.getLatitude() + "\nLongitud: " +
+                            location.getLongitude());
     }
 }
